@@ -5,7 +5,9 @@ import {
   withScriptjs,
   withGoogleMap,
   GoogleMap,
-  Marker
+  Marker,
+  Polyline,
+  lineSymbol
 } from "react-google-maps";
 
 const positions = [
@@ -14,6 +16,8 @@ const positions = [
   {lat: 17.70, lng: 72.1},
   {lat: 18.70, lng: 72.72}
 ];
+
+
 
 const MyMapComponent = compose(
   withProps({
@@ -32,6 +36,22 @@ const MyMapComponent = compose(
       {positions.map((item, index) => 
         <Marker name="Dolores park" position={item} key={index} />
       )}
+      <Polyline
+                path={positions}
+                geodesic={true}
+                options={{
+                    strokeColor: "#ff2527",
+                    strokeOpacity: 0.75,
+                    strokeWeight: 2,
+                    icons: [
+                        {
+                            icon: lineSymbol,
+                            offset: "0",
+                            repeat: "20px"
+                        }
+                    ]
+                }}
+            />
   </GoogleMap>
 ));
 
