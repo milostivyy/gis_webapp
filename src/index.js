@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import ReactDOM from "react-dom";
 import { compose, withProps } from "recompose";
 import {
@@ -7,22 +7,34 @@ import {
   GoogleMap,
   Marker,
   Polyline,
-  lineSymbol
+  Polygon,
 } from "react-google-maps";
 
 const positions = [
   {lat: 18.975, lng: 72.825833},
-  {lat: 18.70, lng: 72.8258},
   {lat: 17.70, lng: 72.1},
-  {lat: 18.70, lng: 72.72}
+  {lat: 18.70, lng: 72.72},
+  {lat:19.8762,lng:75.3433},
+  {lat:18.5204,lng:73.8567},
+  {lat:17.6599,lng:75.9064}
 ];
-
-
-
+const points = [
+  {location:[18.975,72.825833],weight:2},
+  {location:[17.70, 72.1],weight:3},
+  {location:[18.70,72.72],weight:1},
+  {location:[19.8762,75.3433],weight:5},
+  {location:[18.5204,73.8567],weight:6},
+  {location:[17.6599,75.9064],weight:7}
+];
+const lineSymbol = {
+  path: "M 0,-1 0,1",
+  strokeOpacity: 1,
+  scale: 4,
+};
 const MyMapComponent = compose(
   withProps({
     googleMapURL:
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDj26Nvzuw98GSnNTBOsIIRpHs1sdney5Q&v=3.exp&libraries=geometry,drawing,places",
+      "https://maps.googleapis.com/maps/api/js?key=AIzaSyDj26Nvzuw98GSnNTBOsIIRpHs1sdney5Q&libraries=visualization&callback=initMap",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `400px` }} />,
     mapElement: <div style={{ height: `150%` }} />
@@ -34,7 +46,7 @@ const MyMapComponent = compose(
   <GoogleMap defaultZoom={8} defaultCenter={{lat: 18.975, lng: 72.825833}}>
      {/* <Marker position={{ lat: 18.975, lng: 72.825833 }} /> */}
       {positions.map((item, index) => 
-        <Marker name="Dolores park" position={item} key={index} />
+        <Marker name="cities" position={item} key={index} />
       )}
       <Polyline
                 path={positions}
@@ -51,7 +63,23 @@ const MyMapComponent = compose(
                         }
                     ]
                 }}
-            />
+
+          />
+          {positions.length &&
+          positions.map((item, key) => (
+          <Polygon
+            key={key}
+            options={{
+              fillColor: `#ffff00`,
+              fillOpacity: 0.2,
+              strokeWeight: 1,
+              clickable: true,
+              editable: false,
+            }}
+            paths={item.data}
+          />
+        ))}
+            
   </GoogleMap>
 ));
 
